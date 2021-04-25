@@ -9,9 +9,13 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/apimachinery/pkg/version"
 
+	"k8s.io/apiserver/pkg/registry/rest"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 
 	"github.com/Marcos30004347/kubernetes-posts/pkg/apis/baz"
+	customregistry "github.com/Marcos30004347/kubernetes-posts/pkg/registry"
+	barstorage "github.com/Marcos30004347/kubernetes-posts/pkg/registry/baz/bar"
+	foostorage "github.com/Marcos30004347/kubernetes-posts/pkg/registry/baz/foo"
 )
 
 var (
@@ -89,6 +93,12 @@ func (c CompletedConfig) New() (*CustomServer, error) {
 	}
 
 	apiGroupInfo := genericapiserver.NewDefaultAPIGroupInfo(baz.GroupName, Scheme, metav1.ParameterCodec, Codecs)
+
+	v1alpha1storage := map[string]rest.Storage{}
+	// NewREST from the registry/etcd.go
+	v1alpha1storage["foos"] = customregistry.RESTInPeace(foostorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
+	v1alpha1storage["bars"] = customregistry.RESTInPeace(barstorage.NewREST(Scheme, c.GenericConfig.RESTOptionsGetter))
+	apiGroupInfo.VersionedResourcesStorageMap["v1alpha1"] = v1alpha1storage
 
 	if err := s.GenericAPIServer.InstallAPIGroup(&apiGroupInfo); err != nil {
 		return nil, err
