@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baz-api
+  namespace: baz-api
+  labels:
+    apiserver: 'true'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      apiserver: 'true'
+  template:
+    metadata:
+      labels:
+        apiserver: 'true'
+    spec:
+      serviceAccountName: apiserver
+      containers:
+      - name: etcd
+        image: quay.io/coreos/etcd:v3.2.24
+      - name: apiserver
+        image: marcos30004347/kubernetes-posts:latest
+        imagePullPolicy: Never
+        args:
+        - --etcd-servers=http://localhost:2379
+        - --cert-dir=/tmp/certs
+        - --secure-port=8443
+        - --v=4

@@ -1,0 +1,7 @@
+apiVersion: baz/v1alpha1
+kind: Foo
+metadata:
+  name: Foo0
+spec:
+  bar:
+    - Bar0

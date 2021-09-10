@@ -1,0 +1,6 @@
+apiVersion: baz/v1alpha1
+kind: Bar
+metadata:
+  name: Bar0
+spec:
+  description: "This is and example Bar"

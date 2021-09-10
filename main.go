@@ -18,8 +18,10 @@ func main() {
 	stopCh := genericapiserver.SetupSignalHandler()
 
 	options := server.NewCustomServerOptions(os.Stdout, os.Stderr)
+
 	cmd := server.NewCommandStartCustomServer(options, stopCh)
 	cmd.Flags().AddGoFlagSet(flag.CommandLine)
+
 	if err := cmd.Execute(); err != nil {
 		klog.Fatal(err)
 	}
