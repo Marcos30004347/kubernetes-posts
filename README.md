@@ -1,1 +1,1 @@
-Custom Kubernetes API Server writting for my medium kubernetes posts.
+Custom Kubernetes API Server written for my series of posts on medium about low level kubernetes programming. The first post is available at https://medium.com/@marcos30004347/programming-a-kubernetes-extension-api-server-part-1-60526e141a10
